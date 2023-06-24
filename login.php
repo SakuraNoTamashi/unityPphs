@@ -29,8 +29,8 @@ try {
                 default:
                     $tableName = '`estudiantes`';
             }*/
-
-            $sql = "SELECT * FROM `estudiantes` WHERE email='" . $usuario . "'AND password='" . $pass . "';";
+            $password = hash('sha256', $pass);
+            $sql = "SELECT * FROM `estudiantes` WHERE email='" . $usuario . "'AND password='" . $password . "';";
             $resultado = $conn->query($sql);
 
             if ($resultado->num_rows > 0) {

@@ -12,13 +12,21 @@ try {
 
         try {
 
-
+            echo "hola";/*
             $usuario = $_POST['userName'];
             $email = $_POST['email'];
             $password = $_POST['password'];
+            $password = hash('sha256', $password);
             $userType = $_POST['userType'];
-            $userGrade = $_POST['userGrade'];
-            echo "debgg" . $email;
+            $userGrade = $_POST['userGrade'];*/
+
+            $usuario = $_GET['userName'];
+            $email = $_GET['email'];
+            $password = $_GET['password'];
+            $password = hash('sha256', $password);
+            $userType = $_GET['userType'];
+            $userGrade = $_GET['userGrade'];
+
 
             $tableName = '`estudiantes`';
 
@@ -50,29 +58,32 @@ try {
 
 
                 if ($conn->query($sql) === TRUE) {
-
-                    $sql = "SELECT * FROM " . $tableName . " WHERE email='" . $email . "';";
-                    $resultado = $conn->query($sql);
+                    $sqlSelect = "SELECT * FROM " . $tableName . " WHERE email='" . $email . "';";
+                    $resultadoSelect = $conn->query($sqlSelect);
                     $texto = '';
 
-                    while ($row = $resultado->fetch_assoc()) {
+                    while ($row = $resultadoSelect->fetch_assoc()) {
                         $texto = "{#id#:" . $row['id'] .
                             ",#userName#:#" . $row['userName'] .
                             ",#email#:#" . $row['email'] .
                             "#,#password#:#" . $row['password'] .
                             "#,#userType#:" . $row['userType'] .
-
                             ",#userGrade#:" . $row['userGrade'] .
                             "}";
+                        echo "id: " . $row['id'];
+                        if ($userType == 1) {
+                            $avatar_json = json_encode(["avatar" => "default"]);
+                            $logros_json = json_encode(["logros" => ""]);
+                            $sqlInsert = "INSERT INTO `inventarios` (`id`, `idEstudiante`, `monedas`, `logros`, `vidas`, `avatar`)
+VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . $avatar_json . "')";
+                            $resultadoInsert = $conn->query($sqlInsert);
+                            if ($resultadoInsert) {
+                                echo "Query executed successfully. Affected rows: " . $conn->affected_rows;
+                            } else {
+                                echo "Error executing query: " . $conn->error;
+                            }
+                        }
                     }
-
-                    echo '{"codigo": 401, "mensaje": "Se creó el siguiente usuario"}';
-                    // $response = array(
-                    //     "codigo" => 401,
-                    //     "mensaje" => "Se creó el siguiente usuario",
-                    //     "respuesta" => $row
-                    // );
-                    // echo json_encode($response);
                 } else {
                     echo '{"codigo": 401, "mensaje": "Error intentando crear el usuario"}';
                     // $response = array(
@@ -85,8 +96,6 @@ try {
             }
         } catch (Exception $e) {
             echo '{"codigo": 503, "mensaje": "No hay datos para crear el usuario ' . $e->getMessage() . '"}';
-
-
 
             // $response = array(
             //     "codigo" => 503,
