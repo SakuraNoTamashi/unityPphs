@@ -75,16 +75,22 @@ try {
                             "#,#userType#:" . $row['userType'] .
                             ",#userGrade#:" . $row['userGrade'] .
                             "}";
-                        echo "id: " . $row['id'];
+
                         if ($userType == 1) {
                             $logros_json = json_encode(["logros" => ""]);
                             $sqlInsert = "INSERT INTO `inventarios` (`id`, `idEstudiante`, `monedas`, `logros`, `vidas`, `avatar`)
                             VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . 0 . "')";
                             $resultadoInsert = $conn->query($sqlInsert);
                             if ($resultadoInsert) {
-                                echo "Query executed successfully. Affected rows: " . $conn->affected_rows;
+                                $responseJson['codigo'] = 200;
+                                $responseJson['mensaje'] = "Registrado e inventario creado";
+                                $responseJson['respuesta'] = '';
+                                echo $responseJson;
                             } else {
-                                echo "Error executing query: " . $conn->error;
+                                $responseJson['codigo'] = 401;
+                                $responseJson['mensaje'] = "Error intentando crear el usuario";
+                                $responseJson['respuesta'] = '';
+                                echo $responseJson;
                             }
                         }
                     }

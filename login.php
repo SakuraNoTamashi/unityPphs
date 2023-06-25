@@ -55,7 +55,7 @@ try {
                     if ($row2) {
 
                         $userInfo['coins'] = isset($row2['monedas']) ? intval($row2['monedas']) : -1;
-                        $userInfo['lives'] = isset($row2['vidas']) ? intval($row2['vidas']) : -1;
+                        $userInfo['lifes'] = isset($row2['vidas']) ? intval($row2['vidas']) : -1;
                         $userInfo['avatarIndex'] = isset($row2['avatar']) ? intval($row2['avatar']) : 0;
                         $userInfo['achievements'] = isset($row2['logros']) ? $row2['logros'] : '{"logros":""}';
                     } else {
