@@ -1,50 +1,61 @@
 <?php
-
 include 'header.php';
+
 try {
     $conn = mysqli_connect($db_servidor, $db_usuario, $db_pass, $db_baseDatos);
     if (!$conn) {
-        echo '{"codigo":400, "mensaje": "Error intentando conectar", "respuesta":""}';
+        $responseJson['codigo'] = 400;
+        $responseJson['mensaje'] = "Error intentando conectar";
+        $responseJson['respuesta'] = '';
+        echo json_encode($responseJson);
     } else {
-        if (isset($_GET['usuario']) && isset($_GET['pass']) && isset($_GET['pass2']) && isset($_GET['jugador']) && isset($_GET['nivel'])) {
- 
+        try {
             $usuario = $_GET['usuario'];
             $pass = $_GET['pass'];
             $pass2 = $_GET['pass2'];
             $jugador = $_GET['jugador'];
             $nivel = $_GET['nivel'];
 
-
-
-            $sql = "SELECT * FROM `usuarios` WHERE usuario='".$usuario."';";
+            $tableName = '`usuarios`';
+            $sql = "SELECT * FROM " . $tableName . " WHERE usuario='" . $usuario . "';";
             $resultado = $conn->query($sql);
 
             if ($resultado->num_rows > 0) {
-                $sql = "UPDATE `usuarios` SET `pass`='".$pass2."',`jugador`='".$jugador."',`nivel`='".$nivel."' WHERE usuarios= '".$usuario."';" ;
+                $sql = "UPDATE " . $tableName . " SET `password`='" . $pass2 . "', `jugador`='" . $jugador . "', `nivel`='" . $nivel . "' WHERE usuario='" . $usuario . "';";
                 $conn->query($sql);
 
-                $sql = "SELECT * FROM `usuarios` WHERE usuario='".$usuario."';";
+                $sql = "SELECT * FROM " . $tableName . " WHERE usuario='" . $usuario . "';";
                 $resultado = $conn->query($sql);
-                $texto='';
+                $texto = '';
 
-                while($row=$resultado->fetch_assoc()){
-                    $texto="{#id#:".$row['id'].
-                        ",#usuario#:#".$row['usuario'].
-                        "#,#pass#:#".$row['pass'].
-                        "#,#jugador#:".$row['jugador'].
-                        ",#nivel#:".$row['nivel'].
+                while ($row = $resultado->fetch_assoc()) {
+                    $texto = "{#id#:" . $row['id'] .
+                        ",#usuario#:#" . $row['usuario'] .
+                        "#,#password#:#" . $row['password'] .
+                        "#,#jugador#:" . $row['jugador'] .
+                        ",#nivel#:" . $row['nivel'] .
                         "}";
                 }
-                echo '{"codigo":207, "mensaje":"usuario editado con exito", "respuesta":"'.$texto.'"}';
+                $responseJson['codigo'] = 207;
+                $responseJson['mensaje'] = "Usuario editado con éxito";
+                $responseJson['respuesta'] = $texto;
+                echo json_encode($responseJson);
             } else {
-                echo '{"codigo":203, "mensaje": "El usuario no existe", "respuesta":"0"}';
+                $responseJson['codigo'] = 203;
+                $responseJson['mensaje'] = "El usuario no existe";
+                $responseJson['respuesta'] = "0";
+                echo json_encode($responseJson);
             }
-        } else {
-            echo '{"codigo":444,"mensaje": "Faltan datos para ejecutar la acción"}';
+        } catch (Exception $e) {
+            $responseJson['codigo'] = 444;
+            $responseJson['mensaje'] = "Faltan datos para ejecutar la acción";
+            echo json_encode($responseJson);
         }
     }
 } catch (Exception $e) {
-    echo '{"codigo":400, "mensaje": "Error intentando conectar", "respuesta":""}';
+    $responseJson['codigo'] = 400;
+    $responseJson['mensaje'] = "Error intentando conectar";
+    $responseJson['respuesta'] = '';
+    echo json_encode($responseJson);
 }
 include 'footer.php';
-?>

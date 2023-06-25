@@ -66,10 +66,10 @@ try {
                         echo json_encode($responseJson);
                     }
                 }
-                $responseJson['codigo'] = 202;
-                $responseJson['mensaje'] = "Sesion Iniciada";
-                $responseJson['respuesta'] = json_encode($userInfo);
-                echo json_encode($responseJson);
+                $userInfo['codigo'] = 202;
+                $userInfo['mensaje'] = "Sesion Iniciada";
+                $userInfo['respuesta'] = '';
+                echo json_encode($userInfo);
             } else {
                 $responseJson['codigo'] = 203;
                 $responseJson['mensaje'] = "Datos Incorrectos";
