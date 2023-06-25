@@ -58,6 +58,7 @@ try {
                         $userInfo['lifes'] = isset($row2['vidas']) ? intval($row2['vidas']) : -1;
                         $userInfo['avatarIndex'] = isset($row2['avatar']) ? intval($row2['avatar']) : 0;
                         $userInfo['achievements'] = isset($row2['logros']) ? $row2['logros'] : '{"logros":""}';
+                        $userInfo['level'] = isset($row2['nivel']) ? intval($row2['nivel']) : 0;
                     } else {
 
                         $responseJson['codigo'] = 444;

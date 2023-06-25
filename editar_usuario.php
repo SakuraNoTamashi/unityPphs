@@ -2,6 +2,8 @@
 include 'header.php';
 
 try {
+    //https://localhost/gamificacion/editar_usuario.php?id=17&userName=newJhonnName&email=johnd25a@example.com&userType=1&userGrade=1&avatarIndex=6&lifes=2&nivel=1&coins=33&achievements=Nonejaja
+
     $conn = mysqli_connect($db_servidor, $db_usuario, $db_pass, $db_baseDatos);
     if (!$conn) {
         $responseJson['codigo'] = 400;
@@ -10,45 +12,64 @@ try {
         echo json_encode($responseJson);
     } else {
         try {
-            $usuario = $_GET['usuario'];
-            $pass = $_GET['pass'];
-            $pass2 = $_GET['pass2'];
-            $jugador = $_GET['jugador'];
-            $nivel = $_GET['nivel'];
+            $id = $_GET['id'];
+            $userName = $_GET['userName'];
+            $email = $_GET['email'];
+            $userType = $_GET['userType'];
+            $userGrade = $_GET['userGrade'];
+            $avatarIndex = $_GET['avatarIndex'];
+            $lifes = $_GET['lifes'];
+            $level = $_GET['nivel'];
+            $coins = $_GET['coins'];
+            $achievements = $_GET['achievements'];
 
-            $tableName = '`usuarios`';
-            $sql = "SELECT * FROM " . $tableName . " WHERE usuario='" . $usuario . "';";
+            $tableName = '`estudiantes`';
+
+            switch ($userType) {
+                case 1:
+                    $tableName = '`estudiantes`';
+
+                    break;
+                case 2:
+                    $tableName = '`profesores`';
+
+                    break;
+                case 1:
+                    $tableName = '`padres`';
+
+                    break;
+                default:
+                    $tableName = '`estudiantes`';
+            }
+
+            $sql = "UPDATE " . $tableName . " SET `userName`='" . $userName . "', `userGrade`='" . $userGrade . "' WHERE email='" . $email . "';";
+            echo $sql;
             $resultado = $conn->query($sql);
-
-            if ($resultado->num_rows > 0) {
-                $sql = "UPDATE " . $tableName . " SET `password`='" . $pass2 . "', `jugador`='" . $jugador . "', `nivel`='" . $nivel . "' WHERE usuario='" . $usuario . "';";
+            echo $conn->affected_rows;
+            if ($conn->affected_rows > 0) {
+                $sql = "UPDATE `inventarios`  SET `monedas`='" . $coins . "', `vidas`='" . $lifes . "', `avatar`='" . $avatarIndex . "', `nivel`='" . $level .  "', `logros`='" . $achievements . "' WHERE idEstudiante='" . $id . "';";
                 $conn->query($sql);
 
-                $sql = "SELECT * FROM " . $tableName . " WHERE usuario='" . $usuario . "';";
-                $resultado = $conn->query($sql);
-                $texto = '';
-
-                while ($row = $resultado->fetch_assoc()) {
-                    $texto = "{#id#:" . $row['id'] .
-                        ",#usuario#:#" . $row['usuario'] .
-                        "#,#password#:#" . $row['password'] .
-                        "#,#jugador#:" . $row['jugador'] .
-                        ",#nivel#:" . $row['nivel'] .
-                        "}";
+                if ($conn->affected_rows > 0) {
+                    $responseJson['codigo'] = 200;
+                    $responseJson['mensaje'] = "Usuario e inventario editados con éxito";
+                    $responseJson['respuesta'] = $texto;
+                } else {
+                    $responseJson['codigo'] = 202;
+                    $responseJson['mensaje'] = "Usuario editado con éxito pero no inventario";
+                    $responseJson['respuesta'] = $texto;
                 }
-                $responseJson['codigo'] = 207;
-                $responseJson['mensaje'] = "Usuario editado con éxito";
-                $responseJson['respuesta'] = $texto;
                 echo json_encode($responseJson);
             } else {
-                $responseJson['codigo'] = 203;
-                $responseJson['mensaje'] = "El usuario no existe";
+                $responseJson['codigo'] = 200;
+                $responseJson['mensaje'] = "El usuario ya tenia esa informacion o no existe";
                 $responseJson['respuesta'] = "0";
                 echo json_encode($responseJson);
             }
         } catch (Exception $e) {
+            echo $e->getMessage();
             $responseJson['codigo'] = 444;
-            $responseJson['mensaje'] = "Faltan datos para ejecutar la acción";
+            $responseJson['mensaje'] = "Faltan datos paaara ejecutar la accssión";
             echo json_encode($responseJson);
         }
     }
