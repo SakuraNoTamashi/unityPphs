@@ -9,20 +9,16 @@ try {
         if (isset($_GET['idEstudiante']) && isset($_GET['monedas'])) {
             $idEstudiante = $_GET['idEstudiante'];
             $monedas = $_GET['monedas'];
-
             $sql = "UPDATE `inventarios` SET `monedas` = `monedas` + " . $monedas . " WHERE idEstudiante='" . $idEstudiante . "';";
-
             if ($conn->query($sql) === TRUE) {
                 $sql = "SELECT * FROM `inventarios` WHERE idEstudiante='" . $idEstudiante . "';";
                 $resultado = $conn->query($sql);
                 $texto = '';
-
                 while ($row = $resultado->fetch_assoc()) {
                     $texto = "{#idEstudiante#:#" . $row['idEstudiante'] .
                         "#,#monedas#:#" . $row['monedas'] .
                         "}";
                 }
-
                 echo '{"codigo": 401, "mensaje": "Se actualizó el usuario", "respuesta": "' . $texto . '"}';
             } else {
                 echo '{"codigo": 401, "mensaje": "Error intentando actualizar el usuario", "respuesta": ""}';
