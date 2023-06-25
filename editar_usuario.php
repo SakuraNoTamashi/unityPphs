@@ -12,6 +12,7 @@ try {
         echo json_encode($responseJson);
     } else {
         try {
+            /*
             $id = $_GET['id'];
             $userName = $_GET['userName'];
             $email = $_GET['email'];
@@ -22,7 +23,17 @@ try {
             $level = $_GET['nivel'];
             $coins = $_GET['coins'];
             $achievements = $_GET['achievements'];
-
+*/
+            $id = $_POST['id'];
+            $userName = $_POST['userName'];
+            $email = $_POST['email'];
+            $userType = $_POST['userType'];
+            $userGrade = $_POST['userGrade'];
+            $avatarIndex = $_POST['avatarIndex'];
+            $lifes = $_POST['lifes'];
+            $level = $_POST['nivel'];
+            $coins = $_POST['coins'];
+            $achievements = $_POST['achievements'];
             $tableName = '`estudiantes`';
 
             switch ($userType) {
@@ -43,29 +54,22 @@ try {
             }
 
             $sql = "UPDATE " . $tableName . " SET `userName`='" . $userName . "', `userGrade`='" . $userGrade . "' WHERE email='" . $email . "';";
-            echo $sql;
-            $resultado = $conn->query($sql);
-            echo $conn->affected_rows;
-            if ($conn->affected_rows > 0) {
-                $sql = "UPDATE `inventarios`  SET `monedas`='" . $coins . "', `vidas`='" . $lifes . "', `avatar`='" . $avatarIndex . "', `nivel`='" . $level .  "', `logros`='" . $achievements . "' WHERE idEstudiante='" . $id . "';";
-                $conn->query($sql);
 
-                if ($conn->affected_rows > 0) {
-                    $responseJson['codigo'] = 200;
-                    $responseJson['mensaje'] = "Usuario e inventario editados con éxito";
-                    $responseJson['respuesta'] = $texto;
-                } else {
-                    $responseJson['codigo'] = 202;
-                    $responseJson['mensaje'] = "Usuario editado con éxito pero no inventario";
-                    $responseJson['respuesta'] = $texto;
-                }
-                echo json_encode($responseJson);
-            } else {
+            $resultado = $conn->query($sql);
+
+            $sql = "UPDATE `inventarios`  SET `monedas`='" . $coins . "', `vidas`='" . $lifes . "', `avatar`='" . $avatarIndex . "', `nivel`='" . $level .  "', `logros`='" . $achievements . "' WHERE idEstudiante='" . $id . "';";
+            $conn->query($sql);
+
+            if ($conn->affected_rows > 0) {
                 $responseJson['codigo'] = 200;
-                $responseJson['mensaje'] = "El usuario ya tenia esa informacion o no existe";
-                $responseJson['respuesta'] = "0";
-                echo json_encode($responseJson);
+                $responseJson['mensaje'] = "Usuario e inventario editados con éxito";
+                $responseJson['respuesta'] = "";
+            } else {
+                $responseJson['codigo'] = 202;
+                $responseJson['mensaje'] = "Usuario editado con éxito pero no inventario";
+                $responseJson['respuesta'] = "";
             }
+            echo json_encode($responseJson);
         } catch (Exception $e) {
             echo $e->getMessage();
             $responseJson['codigo'] = 444;
