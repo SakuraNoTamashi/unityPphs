@@ -7,26 +7,29 @@ try {
     //http://localhost/gamificacion/register.php?userName=JohnDoe&password=mypassword&email=johndoe@example.com&userType=admin&userGrade=A
     $conn = mysqli_connect($db_servidor, $db_usuario, $db_pass, $db_baseDatos);
     if (!$conn) {
-        echo '{"codigo": 400, "mensaje": "Error 1intentando conectar"}';
+        $responseJson['codigo'] = 400;
+        $responseJson['mensaje'] = "Error intentando conectar";
+        $responseJson['respuesta'] = '';
+        echo json_encode($responseJson);
     } else {
 
         try {
 
-            echo "hola";/*
+            echo "hola";
             $usuario = $_POST['userName'];
             $email = $_POST['email'];
             $password = $_POST['password'];
             $password = hash('sha256', $password);
             $userType = $_POST['userType'];
-            $userGrade = $_POST['userGrade'];*/
-
+            $userGrade = $_POST['userGrade'];
+            /*
             $usuario = $_GET['userName'];
             $email = $_GET['email'];
             $password = $_GET['password'];
             $password = hash('sha256', $password);
             $userType = $_GET['userType'];
             $userGrade = $_GET['userGrade'];
-
+*/
 
             $tableName = '`estudiantes`';
 
@@ -50,8 +53,10 @@ try {
             $resultado = $conn->query($sql);
 
             if ($resultado->num_rows > 0) {
-
-                echo '{"codigo": 202, "mensaje": "Usuario existe en el sistema ya registrado"}';
+                $responseJson['codigo'] = 202;
+                $responseJson['mensaje'] = "Usuario existe en el sistema ya registrado";
+                $responseJson['respuesta'] = '';
+                echo json_encode($responseJson);
             } else {
                 $sql = "INSERT INTO $tableName (`id`, `userName`, `email`, `password`, `userType`, `userGrade`)
     VALUES (NULL, '" . $usuario . "', '" . $email . "', '" . $password . "', '" . $userType . "', '" . $userGrade . "')";
@@ -72,10 +77,9 @@ try {
                             "}";
                         echo "id: " . $row['id'];
                         if ($userType == 1) {
-                            $avatar_json = json_encode(["avatar" => "default"]);
                             $logros_json = json_encode(["logros" => ""]);
                             $sqlInsert = "INSERT INTO `inventarios` (`id`, `idEstudiante`, `monedas`, `logros`, `vidas`, `avatar`)
-VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . $avatar_json . "')";
+                            VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . 0 . "')";
                             $resultadoInsert = $conn->query($sqlInsert);
                             if ($resultadoInsert) {
                                 echo "Query executed successfully. Affected rows: " . $conn->affected_rows;
@@ -85,7 +89,10 @@ VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . $avat
                         }
                     }
                 } else {
-                    echo '{"codigo": 401, "mensaje": "Error intentando crear el usuario"}';
+                    $responseJson['codigo'] = 401;
+                    $responseJson['mensaje'] = "Error intentando crear el usuario";
+                    $responseJson['respuesta'] = '';
+                    echo json_encode($responseJson);
                     // $response = array(
                     //     "codigo" => 401,
                     //     "mensaje" => "Error intentando crear el usuario",
@@ -95,7 +102,11 @@ VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . $avat
                 }
             }
         } catch (Exception $e) {
-            echo '{"codigo": 503, "mensaje": "No hay datos para crear el usuario ' . $e->getMessage() . '"}';
+            $responseJson['codigo'] = 503;
+            $responseJson['mensaje'] = "No hay datos para crear el usuario";
+            $responseJson['respuesta'] = '';
+            echo json_encode($responseJson);
+
 
             // $response = array(
             //     "codigo" => 503,
@@ -106,6 +117,9 @@ VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . $avat
     }
 } catch (Exception $e) {
 
-    echo '{"codigo": 400, "mensaje": "Error inten2tando conectar"}';
+    $responseJson['codigo'] = 400;
+    $responseJson['mensaje'] = "Error intentando conectar";
+    $responseJson['respuesta'] = '';
+    echo json_encode($responseJson);
 }
 include 'footer.php';

@@ -3,8 +3,12 @@
 include 'header.php';
 try {
     $conn = mysqli_connect($db_servidor, $db_usuario, $db_pass, $db_baseDatos);
+    $responseJson = array();
     if (!$conn) {
-        echo '{"codigo":400, "mensaje": "Error intentando conectar", "respuesta":""}';
+        $responseJson['codigo'] = 400;
+        $responseJson['mensaje'] = "Error intentando conectar";
+        $responseJson['respuesta'] = '';
+        echo json_encode($responseJson);
     } else {
         if (isset($_POST['email']) && isset($_POST['password'])) {
             $usuario = $_POST['email'];
@@ -37,20 +41,52 @@ try {
                 $sql = "SELECT * FROM `estudiantes` WHERE email='" . $usuario . "';";
                 $resultado = $conn->query($sql);
                 $texto = '';
+                //Llamado a inventario
+                $row = $resultado->fetch_assoc();
+                $userInfo = $row;
 
-                while ($row = $resultado->fetch_assoc()) {
-                    $texto = "id:" . $row['id'] .
-                        "";
+                if (intval($row['userType']) == 1) {
+
+
+                    $sql2 = "SELECT * FROM `inventarios` WHERE idEstudiante='" . intval($row['id']) . "';";
+                    $resultado2 = $conn->query($sql2);
+                    $row2 = $resultado2->fetch_assoc();  // Only fetch once, not in a while loop
+
+                    if ($row2) {
+
+                        $userInfo['coins'] = isset($row2['monedas']) ? intval($row2['monedas']) : -1;
+                        $userInfo['lives'] = isset($row2['vidas']) ? intval($row2['vidas']) : -1;
+                        $userInfo['avatarIndex'] = isset($row2['avatar']) ? intval($row2['avatar']) : 0;
+                        $userInfo['achievements'] = isset($row2['logros']) ? $row2['logros'] : '{"logros":""}';
+                    } else {
+
+                        $responseJson['codigo'] = 444;
+                        $responseJson['mensaje'] = "Faltan datos para ejecutar la acción de inventario";
+                        $responseJson['respuesta'] = "";
+                        echo json_encode($responseJson);
+                    }
                 }
-                echo '{"codigo":202, "mensaje":"Sesion Iniciada", "respuesta":"' . $texto . '"}';
+                $responseJson['codigo'] = 202;
+                $responseJson['mensaje'] = "Sesion Iniciada";
+                $responseJson['respuesta'] = json_encode($userInfo);
+                echo json_encode($responseJson);
             } else {
-                echo '{"codigo":203, "mensaje": "Datos Incorrectos", "respuesta":"0"}';
+                $responseJson['codigo'] = 203;
+                $responseJson['mensaje'] = "Datos Incorrectos";
+                $responseJson['respuesta'] = '';
+                echo json_encode($responseJson);
             }
         } else {
-            echo '{"codigo":444,"mensaje": "Faltan datos para ejecutar la acción"}';
+            $responseJson['codigo'] = 444;
+            $responseJson['mensaje'] = "Faltan datos para ejecutar la acción";
+            $responseJson['respuesta'] = '';
+            echo json_encode($responseJson);
         }
     }
 } catch (Exception $e) {
-    echo '{"codigo":400, "mensaje": "Error intentando conectar", "respuesta":""}';
+    $responseJson['codigo'] = 400;
+    $responseJson['mensaje'] = "Error intentando conectar";
+    $responseJson['respuesta'] = '';
+    echo json_encode($responseJson);
 }
 include 'footer.php';
