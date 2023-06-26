@@ -73,6 +73,7 @@ try {
         } catch (Exception $e) {
             echo $e->getMessage();
             $responseJson['codigo'] = 444;
+            $responseJson['respuesta'] = "";
             $responseJson['mensaje'] = "Faltan datos paaara ejecutar la accssión";
             echo json_encode($responseJson);
         }
