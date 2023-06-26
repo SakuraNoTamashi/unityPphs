@@ -40,6 +40,7 @@ try {
             if ($resultado->num_rows > 0) {
                 $sql = "SELECT * FROM `estudiantes` WHERE email='" . $usuario . "';";
                 $resultado = $conn->query($sql);
+
                 $texto = '';
                 //Llamado a inventario
                 $row = $resultado->fetch_assoc();
