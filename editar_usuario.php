@@ -33,7 +33,10 @@ try {
             $lifes = $_POST['lifes'];
             $level = $_POST['nivel'];
             $coins = $_POST['coins'];
-            $achievements = $_POST['achievements'];
+            $maths = $_POST['maths'];
+            $langs = $_POST['langs'];
+            $naturals = $_POST['naturals'];
+            $socials = $_POST['socials'];
             $tableName = '`estudiantes`';
 
             switch ($userType) {
@@ -57,7 +60,7 @@ try {
 
             $resultado = $conn->query($sql);
 
-            $sql = "UPDATE `inventarios`  SET `monedas`='" . $coins . "', `vidas`='" . $lifes . "', `avatar`='" . $avatarIndex . "', `nivel`='" . $level .  "', `logros`='" . $achievements . "' WHERE idEstudiante='" . $id . "';";
+            $sql = "UPDATE `inventarios`  SET `monedas`='" . $coins . "', `vidas`='" . $lifes . "', `avatar`='" . $avatarIndex . "', `nivel`='" . $level .  "', `lenguas`='" . $langs . "', `matematicas`='" . $maths . "', `sociales`='" . $socials . "', `naturales`='" . $naturals . "' WHERE idEstudiante='" . $id . "';";
             $conn->query($sql);
 
             if ($conn->affected_rows > 0) {
