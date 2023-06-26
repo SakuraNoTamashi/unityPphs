@@ -13,21 +13,21 @@ try {
     } else {
         try {
             /*
-            $id = $_GET['id'];
-            $userName = $_GET['userName'];
-            $email = $_GET['email'];
-            $userType = $_GET['userType'];
-            $userGrade = $_GET['userGrade'];
-            $avatarIndex = $_GET['avatarIndex'];
-            $lifes = $_GET['lifes'];
-            $level = $_GET['nivel'];
-            $coins = $_GET['coins'];
-            $achievements = $_GET['achievements'];
+            $id = $_POST['id'];
+            $userName = $_POST['userName'];
+            $email = $_POST['email'];
+            $userType = $_POST['userType'];
+            $userGrade = $_POST['userGrade'];
+            $avatarIndex = $_POST['avatarIndex'];
+            $lifes = $_POST['lifes'];
+            $level = $_POST['nivel'];
+            $coins = $_POST['coins'];
+            $achievements = $_POST['achievements'];
 */
 
-            $email = $_GET['email'];
+            $email = $_POST['email'];
 
-            $userGrade = $_GET['userGrade'];
+            $userGrade = $_POST['userGrade'];
 
 
             $tableName = '`estudiantes`';
