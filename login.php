@@ -58,7 +58,10 @@ try {
                         $userInfo['coins'] = isset($row2['monedas']) ? intval($row2['monedas']) : -1;
                         $userInfo['lifes'] = isset($row2['vidas']) ? intval($row2['vidas']) : -1;
                         $userInfo['avatarIndex'] = isset($row2['avatar']) ? intval($row2['avatar']) : 0;
-                        $userInfo['achievements'] = isset($row2['logros']) ? $row2['logros'] : '{"logros":""}';
+                        $userInfo['socials'] = isset($row2['sociales']) ? $row2['sociales'] : 0;
+                        $userInfo['maths'] = isset($row2['matematicas']) ? $row2['matematicas'] : 0;
+                        $userInfo['naturals'] = isset($row2['naturales']) ? $row2['naturales'] : 0;
+                        $userInfo['langs'] = isset($row2['lenguas']) ? $row2['lenguas'] : 0;
                         $userInfo['level'] = isset($row2['nivel']) ? intval($row2['nivel']) : 0;
                     } else {
 
