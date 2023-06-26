@@ -78,7 +78,7 @@ try {
                 echo json_encode($responseJson);
             }
         } else {
-            $responseJson['codigo'] = 444;
+            $responseJson['codigo'] = 445;
             $responseJson['mensaje'] = "Faltan datos para ejecutar la acción";
             $responseJson['respuesta'] = '';
             echo json_encode($responseJson);
