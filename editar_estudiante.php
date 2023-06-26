@@ -25,9 +25,9 @@ try {
             $achievements = $_GET['achievements'];
 */
 
-            $email = $_GET['email'];
+            $email = $_POST['email'];
 
-            $userGrade = $_GET['userGrade'];
+            $userGrade = $_POST['userGrade'];
 
 
             $tableName = '`estudiantes`';
