@@ -63,6 +63,12 @@ try {
                         $userInfo['naturals'] = isset($row2['naturales']) ? $row2['naturales'] : 0;
                         $userInfo['langs'] = isset($row2['lenguas']) ? $row2['lenguas'] : 0;
                         $userInfo['level'] = isset($row2['nivel']) ? intval($row2['nivel']) : 0;
+                        if (intval($row2['vidas'])<1) {
+                            $responseJson['codigo'] = 203;
+                            $responseJson['mensaje'] = "vidas agotadas";
+                            $responseJson['respuesta'] = '';
+                            echo json_encode($responseJson);
+                        }
                     } else {
 
                         $responseJson['codigo'] = 444;
