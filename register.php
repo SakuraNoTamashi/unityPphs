@@ -76,9 +76,9 @@ try {
                             "}";
 
                         if ($userType == 1) {
-                            $logros_json = json_encode(["logros" => ""]);
+
                             $sqlInsert = "INSERT INTO `inventarios` (`id`, `idEstudiante`, `monedas`, `vidas`, `avatar`, `nivel`, `matematicas`, `naturales`, `Lenguas`, `sociales`)
-                            VALUES (NULL, '" . $row['id'] . "', '0', '" . $logros_json . "', '3', '" . 0 . "','0','0','0','0')";
+                            VALUES (NULL, '" . $row['id'] . "', '0', '3','0', '" . 0 . "','0','0','0','0')";
                             $resultadoInsert = $conn->query($sqlInsert);
                             if ($resultadoInsert) {
                                 $responseJson['codigo'] = 200;
